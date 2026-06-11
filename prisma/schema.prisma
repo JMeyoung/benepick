@@ -1,7 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// 베네픽 데이터 모델 — 기획안 §8 "추천 핵심 테이블" 기준.
+// SQLite는 enum을 지원하지 않으므로 상태/코드 값은 String으로 저장하고
+// src/lib/constants.ts + Zod로 검증한다.
 
 generator client {
   provider = "prisma-client"
@@ -10,4 +9,137 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+}
+
+// 관리자 계정 (향후 일반 회원으로 확장 가능)
+model AdminUser {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime   @default(now())
+  auditLogs    AuditLog[]
+}
+
+// 카드사, 통신사, 학생 플랫폼, 제휴 브랜드 등 혜택 제공 주체
+model Organization {
+  id         String                @id @default(cuid())
+  name       String                @unique
+  type       String // CARD | TELECOM | STUDENT_PLATFORM | BRAND | GOVERNMENT | OTHER
+  websiteUrl String?
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  benefits   BenefitOrganization[]
+}
+
+// 혜택 기본 정보 — 출처 링크와 갱신일은 필수 (신뢰 확보 원칙)
+model Benefit {
+  id              String                @id @default(cuid())
+  title           String
+  summary         String // 목록 카드에 보여줄 한 줄 요약
+  description     String // 상세 설명 (적용 방법, 유의사항 포함)
+  category        String // CATEGORIES 코드
+  status          String                @default("DRAFT") // DRAFT | PUBLISHED | ARCHIVED
+  sourceUrl       String // 공식 출처 링크 (필수)
+  sourceUpdatedAt DateTime // 운영자가 출처를 마지막으로 확인·갱신한 날짜 (필수)
+  endsAt          DateTime? // 종료일 (지난 혜택은 노출 제외)
+  isFeatured      Boolean               @default(false) // 운영자 추천 (정렬 가산점)
+  region          String? // 지역 표시·가산점용 (예: "서울")
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  organizations   BenefitOrganization[]
+  rules           EligibilityRule[]
+  favorites       Favorite[]
+
+  @@index([status, category])
+}
+
+// 혜택 ↔ 제공사/제휴사 연결
+model BenefitOrganization {
+  id             String       @id @default(cuid())
+  benefitId      String
+  organizationId String
+  role           String       @default("PROVIDER") // PROVIDER(제공사) | PARTNER(제휴사)
+  benefit        Benefit      @relation(fields: [benefitId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([benefitId, organizationId, role])
+}
+
+// 노출 조건 구조화 — 같은 ruleType끼리는 OR, 다른 타입 간에는 AND로 평가
+model EligibilityRule {
+  id          String  @id @default(cuid())
+  benefitId   String
+  ruleType    String // AGE_RANGE | STUDENT_ONLY | TELECOM | CARD_ISSUER | REGION
+  minAge      Int? // AGE_RANGE 전용
+  maxAge      Int? // AGE_RANGE 전용
+  stringValue String? // TELECOM 코드 | CARD_ISSUER 코드 | REGION 이름
+  benefit     Benefit @relation(fields: [benefitId], references: [id], onDelete: Cascade)
+
+  @@index([benefitId])
+}
+
+// 익명 방문자의 조건 정보 (회원가입 없이 쿠키 visitorId로 식별)
+model VisitorProfile {
+  id            String   @id @default(cuid())
+  visitorId     String   @unique
+  ageGroup      String // AGE_GROUPS 코드
+  isStudent     Boolean
+  telecom       String // TELECOMS 코드
+  cardIssuerIds String // CARD_ISSUERS 코드 JSON 배열 문자열
+  categories    String // CATEGORIES 코드 JSON 배열 문자열
+  region        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// 저장한 혜택
+model Favorite {
+  id        String   @id @default(cuid())
+  visitorId String
+  benefitId String
+  createdAt DateTime @default(now())
+  benefit   Benefit  @relation(fields: [benefitId], references: [id], onDelete: Cascade)
+
+  @@unique([visitorId, benefitId])
+  @@index([visitorId])
+}
+
+// 대기자 등록 / 인터뷰 신청 리드
+model LeadSubmission {
+  id          String   @id @default(cuid())
+  type        String // WAITLIST | INTERVIEW
+  name        String?
+  contact     String // 이메일 또는 휴대폰
+  message     String?
+  consent     Boolean // 개인정보 수집 동의
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  referrer    String?
+  createdAt   DateTime @default(now())
+}
+
+// 관리자 작업 기록
+model AuditLog {
+  id          String     @id @default(cuid())
+  adminUserId String?
+  action      String // CREATE | UPDATE | STATUS_CHANGE | DELETE | LOGIN
+  entityType  String // Benefit | Organization | ...
+  entityId    String?
+  detail      String? // 변경 요약 JSON
+  createdAt   DateTime   @default(now())
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id])
+}
+
+// 사용자 행동 이벤트 (내부 분석용)
+model EventLog {
+  id             String   @id @default(cuid())
+  visitorId      String?
+  eventName      String // onboarding_complete | benefit_view | outbound_click | favorite_add | favorite_remove | lead_submit
+  propertiesJson String?
+  createdAt      DateTime @default(now())
+
+  @@index([eventName, createdAt])
 }
