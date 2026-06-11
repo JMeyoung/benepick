@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 베네픽 (Benepick)
 
-## Getting Started
+나이·학생 여부·통신사·카드사·관심 분야를 입력하면 **내 조건에 맞는 할인 혜택만 한 화면에** 모아 보여주는 혜택 통합 추천 웹서비스 MVP.
 
-First, run the development server:
+> 기획 문서: `docs/PRD.md` (혜택 통합 추천 서비스 총정리)
+
+## 실행 방법
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install            # 의존성 설치 (postinstall에서 prisma generate 자동 실행)
+cp .env.example .env   # 환경변수 준비 (SESSION_SECRET 등 수정)
+npm run db:migrate     # SQLite 마이그레이션
+npm run db:seed        # 예시 혜택 데이터 + 관리자 계정 시드
+npm run dev            # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 관리자
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 주소: `/admin/login`
+- 계정: `.env`의 `ADMIN_EMAIL` / `ADMIN_PASSWORD` (기본값 `admin@benepick.local` / `benepick2026!`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 테스트
 
-## Learn More
+```bash
+npm test               # Vitest 단위 테스트 (혜택 매칭 로직 등)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 기술 스택
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Next.js (App Router) · TypeScript · Tailwind CSS · shadcn/ui · Prisma 7 + SQLite · Zod · jose
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 주의: 시드 데이터
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`prisma/seed.ts`의 혜택 데이터는 실제 멤버십/카드 혜택을 **모사한 예시**입니다. 실제 조건·할인율과 다를 수 있으며, 각 혜택의 "원문 확인" 링크에서 공식 정보를 확인해야 합니다.
