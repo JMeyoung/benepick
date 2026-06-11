@@ -3,7 +3,7 @@ import { jwtVerify } from "jose";
 
 export const config = { matcher: ["/admin/:path*"] };
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   // 로그인 페이지는 통과
   if (req.nextUrl.pathname === "/admin/login") return NextResponse.next();
 
