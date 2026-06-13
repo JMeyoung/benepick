@@ -27,83 +27,110 @@ const VALUE_PROPS = [
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background px-4 py-20 text-center">
-        <div className="mx-auto max-w-2xl">
-          <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
-            MVP 베타 오픈 중
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden px-4 py-24 text-center border-b border-border/50">
+        {/* Background Decorative Glowing Blobs */}
+        <div className="absolute top-[-20%] left-[10%] -z-10 size-[350px] rounded-full bg-primary/15 blur-[80px]" />
+        <div className="absolute bottom-[-10%] right-[10%] -z-10 size-[400px] rounded-full bg-emerald-500/10 blur-[100px]" />
+        
+        <div className="mx-auto max-w-2xl relative z-10">
+          <Badge 
+            variant="outline" 
+            className="mb-6 border-primary/20 bg-primary/5 text-primary px-3 py-1 font-semibold animate-pulse"
+          >
+            🚀 MVP 베타 서비스 오픈
           </Badge>
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          
+          <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl text-foreground">
             내 조건에 맞는<br />
-            <span className="text-primary">혜택만</span> 한 번에
+            <span className="bg-gradient-to-r from-primary to-emerald-500 bg-clip-text text-transparent">
+              혜택만
+            </span> 한 번에
           </h1>
-          <p className="mt-5 text-lg text-muted-foreground">
-            나이·학생 여부·통신사·카드사를 입력하면<br />
-            지금 바로 쓸 수 있는 할인 혜택을 정리해 드려요.
+          
+          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+            나이·학생 여부·통신사·카드사를 한 번 입력하면<br />
+            지금 당장 바로 쓸 수 있는 할인 혜택들만 모아서 보여드려요.
           </p>
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Button asChild size="lg" className="w-full sm:w-auto px-8">
-              <Link href="/onboarding">내 혜택 찾기</Link>
+          
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <Button 
+              asChild 
+              size="lg" 
+              className="w-full sm:w-auto px-10 h-12 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              <Link href="/onboarding">내 맞춤 혜택 찾기 →</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto px-8">
-              <Link href="/waitlist">베타 신청</Link>
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto px-10 h-12 text-base font-semibold hover:bg-accent/50 transition-colors"
+            >
+              <Link href="/waitlist">베타 테스터 신청</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Value Props */}
-      <section className="mx-auto w-full max-w-3xl px-4 py-14">
-        <h2 className="mb-8 text-center text-2xl font-bold">모든 혜택을 한 곳에서</h2>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      {/* Value Props Section */}
+      <section className="mx-auto w-full max-w-4xl px-4 py-20">
+        <h2 className="mb-12 text-center text-3xl font-bold tracking-tight">모든 할인 혜택을 한 곳에서</h2>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {VALUE_PROPS.map((vp) => (
             <div
               key={vp.title}
-              className="flex flex-col items-center gap-2 rounded-xl border bg-card p-5 text-center"
+              className="flex flex-col items-center gap-3 rounded-2xl border border-border/60 bg-card/50 p-6 text-center backdrop-blur-sm shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300 transform hover:-translate-y-1"
             >
-              <span className="text-3xl">{vp.icon}</span>
-              <p className="font-semibold">{vp.title}</p>
-              <p className="text-xs text-muted-foreground">{vp.desc}</p>
+              <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/5 text-3xl mb-2">
+                {vp.icon}
+              </div>
+              <p className="font-bold text-lg text-foreground">{vp.title}</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{vp.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="border-t bg-muted/40 px-4 py-14">
+      {/* How it works Section */}
+      <section className="border-t border-b border-border/40 bg-muted/20 px-4 py-20">
         <div className="mx-auto max-w-2xl">
-          <h2 className="mb-8 text-center text-2xl font-bold">이렇게 사용해요</h2>
-          <ol className="space-y-5">
+          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight">이렇게 간편하게 사용해요</h2>
+          <ol className="space-y-8">
             {[
-              ["1", "조건 입력", "나이·학생·통신사·카드사·관심 분야를 선택해요."],
-              ["2", "맞춤 혜택 확인", "내 조건에 맞는 혜택만 정렬해서 보여드려요."],
-              ["3", "저장하고 바로 활용", "마음에 드는 혜택을 저장하고 원문 링크로 이동해요."],
+              ["1", "조건 입력", "나이·학생 여부·통신사·주로 쓰는 카드사 등 간단한 맞춤 조건을 선택해요."],
+              ["2", "나만의 혜택 확인", "입력해주신 조건에 가장 잘 부합하는 순서대로 혜택을 랭킹 필터링하여 매칭해 드려요."],
+              ["3", "저장 및 활용", "눈에 띄는 혜택을 나중에 찾아보기 편하도록 저장하고, 공식 출처에서 바로 확인해요."],
             ].map(([num, title, desc]) => (
-              <li key={num} className="flex gap-4 items-start">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-sm">
+              <li key={num} className="flex gap-6 items-start">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-emerald-500 text-primary-foreground font-extrabold text-base shadow-sm">
                   {num}
                 </span>
                 <div>
-                  <p className="font-semibold">{title}</p>
-                  <p className="text-sm text-muted-foreground">{desc}</p>
+                  <p className="font-bold text-lg text-foreground">{title}</p>
+                  <p className="text-base text-muted-foreground mt-1 leading-relaxed">{desc}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <div className="mt-10 text-center">
-            <Button asChild size="lg" className="px-10">
-              <Link href="/onboarding">지금 시작하기 →</Link>
+          <div className="mt-14 text-center">
+            <Button 
+              asChild 
+              size="lg" 
+              className="px-12 h-12 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300"
+            >
+              <Link href="/onboarding">지금 무료로 체험해보기 →</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Trust */}
-      <section className="px-4 py-10 text-center text-sm text-muted-foreground">
-        <p>
-          모든 혜택에는 <strong>공식 출처 링크</strong>와 <strong>갱신일</strong>이 함께 표시됩니다.
-        </p>
+      {/* Trust Banner */}
+      <section className="px-4 py-12 text-center text-sm text-muted-foreground border-t border-border/20">
+        <div className="flex items-center justify-center gap-2">
+          <span>🔒 모든 혜택 정보에는 <strong>공식 출처 링크</strong>와 <strong>최종 갱신일</strong>이 필수 표시됩니다.</span>
+        </div>
       </section>
     </div>
   );
