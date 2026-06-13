@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 
 const NAV_ITEMS = [
   { href: "/admin/benefits", label: "혜택 관리" },
+  { href: "/admin/import", label: "혜택 임포트" },
   { href: "/admin/organizations", label: "조직 관리" },
   { href: "/admin/leads", label: "리드 목록" },
   { href: "/admin/logs", label: "감사 로그" },

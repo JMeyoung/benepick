@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { PostHogProvider } from "@/components/posthog-provider";
+import { PostHogPageview } from "@/components/posthog-pageview";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: {
@@ -25,8 +28,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">
-        {children}
-        <Toaster position="top-center" richColors />
+        <PostHogProvider>
+          <Suspense>
+            <PostHogPageview />
+          </Suspense>
+          {children}
+          <Toaster position="top-center" richColors />
+        </PostHogProvider>
       </body>
     </html>
   );

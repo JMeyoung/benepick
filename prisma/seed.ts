@@ -3,14 +3,22 @@
 // 실제 조건·할인율과 다를 수 있으며, sourceUrl의 공식 페이지가 항상 기준이다.
 // 실행: npm run db:seed (기존 데이터를 모두 지우고 다시 넣는다)
 
-import "dotenv/config";
-import bcrypt from "bcryptjs";
-import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { config } from "dotenv";
+import { resolve } from "path";
+config({ path: resolve(__dirname, "../.env") });
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env.DATABASE_URL ?? "file:./prisma/dev.db",
-});
+import bcrypt from "bcryptjs";
+import ws from "ws";
+import { neonConfig } from "@neondatabase/serverless";
+import { PrismaNeon } from "@prisma/adapter-neon";
+import { PrismaClient } from "../src/generated/prisma/client";
+
+neonConfig.webSocketConstructor = ws;
+
+const dbUrl = process.env.DATABASE_URL;
+if (!dbUrl) throw new Error(".env의 DATABASE_URL이 설정되지 않았습니다.");
+
+const adapter = new PrismaNeon({ connectionString: dbUrl });
 const prisma = new PrismaClient({ adapter });
 
 const d = (y: number, m: number, day: number) => new Date(y, m - 1, day, 12, 0, 0);
