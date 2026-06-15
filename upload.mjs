@@ -15,8 +15,11 @@ import { dirname, join } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ---- 설정 ----
-const ORGANIZATION_NAME = "SKT";
-const SKT_RULE = { ruleType: "TELECOM", stringValue: "SKT" };
+const TELECOM_RULES = {
+  SKT:  { ruleType: "TELECOM", stringValue: "SKT" },
+  KT:   { ruleType: "TELECOM", stringValue: "KT" },
+  "LG U+": { ruleType: "TELECOM", stringValue: "LGU" },
+};
 const REQUIRED = ["title", "summary", "description", "category", "sourceUrl", "sourceUpdatedAt"];
 
 // ---- 인자 파싱 ----
@@ -27,7 +30,10 @@ const get = (flag) => {
 };
 const has = (flag) => args.includes(flag);
 
-const jsonPath = get("--json") ?? join(__dirname, "skt_benefits.json");
+const org = get("--org") ?? "SKT";
+const defaultJson = org === "KT" ? "kt_benefits.json" : org === "LG U+" ? "lgu_benefits.json" : "skt_benefits.json";
+const ORGANIZATION_NAME = org;
+const jsonPath = get("--json") ?? join(__dirname, defaultJson);
 const host = get("--host") ?? "http://localhost:3000";
 const dryRun = has("--dry-run");
 let apiKey = get("--api-key");
@@ -69,10 +75,11 @@ if (errors.length) {
   process.exit(1);
 }
 
-// SKT rule 자동 부착
+// 통신사 rule 자동 부착
+const telecomRule = TELECOM_RULES[ORGANIZATION_NAME];
 const enriched = benefits.map((b) => ({
   ...b,
-  rules: b.rules?.length ? b.rules : [SKT_RULE],
+  rules: b.rules?.length ? b.rules : (telecomRule ? [telecomRule] : []),
 }));
 
 console.log(`JSON 로드: ${jsonPath}`);

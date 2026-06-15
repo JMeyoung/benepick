@@ -1,49 +1,105 @@
-name: SKT 혜택 크롤링 & 업로드
+name: 통신사 혜택 크롤링 & 업로드
 
 on:
   schedule:
     - cron: "0 1 * * *"   # 매일 오전 10시 KST (UTC 01:00)
-  workflow_dispatch:        # 수동 실행 버튼
+  workflow_dispatch:
+    inputs:
+      carrier:
+        description: "크롤링할 통신사 (skt/kt/lgu/all)"
+        required: false
+        default: "all"
 
 jobs:
-  crawl-and-upload:
+  crawl-skt:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.carrier == 'all' || github.event.inputs.carrier == 'skt' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
     steps:
-      - name: 코드 체크아웃
-        uses: actions/checkout@v4
-
-      - name: Node.js 설정
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Python 설정
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Python 패키지 설치
         run: pip install anthropic playwright
-
       - name: Playwright 브라우저 설치
         run: python3 -m playwright install chromium --with-deps
-
       - name: SKT 혜택 크롤링
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python3 crawl.py
-
-      - name: Benepick 업로드
+      - name: Benepick 업로드 (SKT)
         env:
-          ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
-        run: node upload.mjs --host ${{ secrets.BENEPICK_URL }}
-
-      - name: 결과 아티팩트 저장
+          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+        run: node upload.mjs --org SKT --host ${{ secrets.BENEPICK_URL }}
+      - uses: actions/upload-artifact@v4
         if: always()
-        uses: actions/upload-artifact@v4
         with:
           name: skt-benefits-${{ github.run_number }}
           path: skt_benefits.json
+          retention-days: 7
+
+  crawl-kt:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.carrier == 'all' || github.event.inputs.carrier == 'kt' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Python 패키지 설치
+        run: pip install anthropic playwright
+      - name: Playwright 브라우저 설치
+        run: python3 -m playwright install chromium --with-deps
+      - name: KT 혜택 크롤링
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 kt_crawl.py
+      - name: Benepick 업로드 (KT)
+        env:
+          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+        run: node upload.mjs --org KT --host ${{ secrets.BENEPICK_URL }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kt-benefits-${{ github.run_number }}
+          path: kt_benefits.json
+          retention-days: 7
+
+  crawl-lgu:
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.carrier == 'all' || github.event.inputs.carrier == 'lgu' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Python 패키지 설치
+        run: pip install anthropic playwright
+      - name: Playwright 브라우저 설치
+        run: python3 -m playwright install chromium --with-deps
+      - name: LG U+ 혜택 크롤링
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 lgu_crawl.py
+      - name: Benepick 업로드 (LG U+)
+        env:
+          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+        run: node upload.mjs --org "LG U+" --host ${{ secrets.BENEPICK_URL }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lgu-benefits-${{ github.run_number }}
+          path: lgu_benefits.json
           retention-days: 7
