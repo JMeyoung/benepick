@@ -67,77 +67,73 @@ export async function POST(req: NextRequest) {
   let created = 0;
   let updated = 0;
 
-  await prisma.$transaction(async (tx) => {
-    for (const item of benefits) {
-      const existing = await tx.benefit.findFirst({
-        where: { title: item.title, sourceUrl: item.sourceUrl },
-      });
+  for (const item of benefits) {
+    const existing = await prisma.benefit.findFirst({
+      where: { title: item.title, sourceUrl: item.sourceUrl },
+    });
 
-      let benefitId: string;
+    let benefitId: string;
 
-      if (existing) {
-        await tx.benefit.update({
-          where: { id: existing.id },
-          data: {
-            summary: item.summary,
-            description: item.description,
-            category: item.category,
-            status: item.status ?? "PUBLISHED",
-            sourceUpdatedAt: new Date(item.sourceUpdatedAt),
-            endsAt: item.endsAt ? new Date(item.endsAt) : null,
-            isFeatured: item.isFeatured ?? false,
-            region: item.region ?? null,
-          },
-        });
-        benefitId = existing.id;
-        updated++;
-      } else {
-        const benefit = await tx.benefit.create({
-          data: {
-            title: item.title,
-            summary: item.summary,
-            description: item.description,
-            category: item.category,
-            status: item.status ?? "PUBLISHED",
-            sourceUrl: item.sourceUrl,
-            sourceUpdatedAt: new Date(item.sourceUpdatedAt),
-            endsAt: item.endsAt ? new Date(item.endsAt) : null,
-            isFeatured: item.isFeatured ?? false,
-            region: item.region ?? null,
-          },
-        });
-        benefitId = benefit.id;
-        created++;
-      }
-
-      // Upsert provider link
-      await tx.benefitOrganization.upsert({
-        where: {
-          benefitId_organizationId_role: {
-            benefitId,
-            organizationId: org.id,
-            role: "PROVIDER",
-          },
+    if (existing) {
+      await prisma.benefit.update({
+        where: { id: existing.id },
+        data: {
+          summary: item.summary,
+          description: item.description,
+          category: item.category,
+          status: item.status ?? "PUBLISHED",
+          sourceUpdatedAt: new Date(item.sourceUpdatedAt),
+          endsAt: item.endsAt ? new Date(item.endsAt) : null,
+          isFeatured: item.isFeatured ?? false,
+          region: item.region ?? null,
         },
-        update: {},
-        create: { benefitId, organizationId: org.id, role: "PROVIDER" },
       });
-
-      // Replace eligibility rules if provided
-      if (item.rules && item.rules.length > 0) {
-        await tx.eligibilityRule.deleteMany({ where: { benefitId } });
-        await tx.eligibilityRule.createMany({
-          data: item.rules.map((r) => ({
-            benefitId,
-            ruleType: r.ruleType,
-            minAge: r.minAge ?? null,
-            maxAge: r.maxAge ?? null,
-            stringValue: r.stringValue ?? null,
-          })),
-        });
-      }
+      benefitId = existing.id;
+      updated++;
+    } else {
+      const benefit = await prisma.benefit.create({
+        data: {
+          title: item.title,
+          summary: item.summary,
+          description: item.description,
+          category: item.category,
+          status: item.status ?? "PUBLISHED",
+          sourceUrl: item.sourceUrl,
+          sourceUpdatedAt: new Date(item.sourceUpdatedAt),
+          endsAt: item.endsAt ? new Date(item.endsAt) : null,
+          isFeatured: item.isFeatured ?? false,
+          region: item.region ?? null,
+        },
+      });
+      benefitId = benefit.id;
+      created++;
     }
-  });
+
+    await prisma.benefitOrganization.upsert({
+      where: {
+        benefitId_organizationId_role: {
+          benefitId,
+          organizationId: org.id,
+          role: "PROVIDER",
+        },
+      },
+      update: {},
+      create: { benefitId, organizationId: org.id, role: "PROVIDER" },
+    });
+
+    if (item.rules && item.rules.length > 0) {
+      await prisma.eligibilityRule.deleteMany({ where: { benefitId } });
+      await prisma.eligibilityRule.createMany({
+        data: item.rules.map((r) => ({
+          benefitId,
+          ruleType: r.ruleType,
+          minAge: r.minAge ?? null,
+          maxAge: r.maxAge ?? null,
+          stringValue: r.stringValue ?? null,
+        })),
+      });
+    }
+  }
 
   await writeAuditLog(
     null,
