@@ -43,9 +43,9 @@ async def crawl_screenshots():
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page(viewport=VIEWPORT)
         print(f"[1단계] 페이지 접속 중...")
-        await page.goto(SOURCE_URL)
-        await page.wait_for_load_state("networkidle")
-        await asyncio.sleep(2)
+        await page.goto(SOURCE_URL, timeout=60000)
+        await page.wait_for_load_state("domcontentloaded")
+        await asyncio.sleep(3)
         total_height = await page.evaluate("document.body.scrollHeight")
         scroll_step = VIEWPORT["height"] - 150
         scroll_pos = 0
