@@ -15,10 +15,10 @@ import { dirname, join } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ---- 설정 ----
-const TELECOM_RULES = {
-  SKT:  { ruleType: "TELECOM", stringValue: "SKT" },
-  KT:   { ruleType: "TELECOM", stringValue: "KT" },
-  "LG U+": { ruleType: "TELECOM", stringValue: "LGU" },
+const ORG_MAP = {
+  SKT:  { name: "SKT",      json: "skt_benefits.json", rule: { ruleType: "TELECOM", stringValue: "SKT" } },
+  KT:   { name: "KT",       json: "kt_benefits.json",  rule: { ruleType: "TELECOM", stringValue: "KT" } },
+  LGU:  { name: "LG유플러스", json: "lgu_benefits.json", rule: { ruleType: "TELECOM", stringValue: "LGU" } },
 };
 const REQUIRED = ["title", "summary", "description", "category", "sourceUrl", "sourceUpdatedAt"];
 
@@ -30,9 +30,14 @@ const get = (flag) => {
 };
 const has = (flag) => args.includes(flag);
 
-const org = get("--org") ?? "SKT";
-const defaultJson = org === "KT" ? "kt_benefits.json" : org === "LG U+" ? "lgu_benefits.json" : "skt_benefits.json";
-const ORGANIZATION_NAME = org;
+const orgKey = get("--org") ?? "SKT";
+const orgConfig = ORG_MAP[orgKey];
+if (!orgConfig) {
+  console.error(`알 수 없는 org: ${orgKey}. 사용 가능: SKT, KT, LGU`);
+  process.exit(1);
+}
+const ORGANIZATION_NAME = orgConfig.name;
+const defaultJson = orgConfig.json;
 const jsonPath = get("--json") ?? join(__dirname, defaultJson);
 const host = get("--host") ?? "http://localhost:3000";
 const dryRun = has("--dry-run");
@@ -76,10 +81,9 @@ if (errors.length) {
 }
 
 // 통신사 rule 자동 부착
-const telecomRule = TELECOM_RULES[ORGANIZATION_NAME];
 const enriched = benefits.map((b) => ({
   ...b,
-  rules: b.rules?.length ? b.rules : (telecomRule ? [telecomRule] : []),
+  rules: b.rules?.length ? b.rules : (orgConfig.rule ? [orgConfig.rule] : []),
 }));
 
 console.log(`JSON 로드: ${jsonPath}`);

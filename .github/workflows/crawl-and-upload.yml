@@ -111,7 +111,7 @@ jobs:
           ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
         run: |
           if [ -f lgu_benefits.json ]; then
-            node upload.mjs --org "LG유플러스" --host ${{ secrets.BENEPICK_URL }}
+            node upload.mjs --org LGU --host ${{ secrets.BENEPICK_URL }}
           else
             echo "lgu_benefits.json 없음 — 크롤링 실패로 업로드 스킵"
           fi
