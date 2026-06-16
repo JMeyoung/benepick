@@ -19,15 +19,15 @@ export function OnboardingForm() {
   const [state, action, pending] = useActionState(saveOnboardingAction, INITIAL_STATE);
 
   return (
-    <form action={action} className="space-y-8">
+    <form action={action} className="space-y-10">
       {/* 연령대 */}
       <fieldset>
-        <legend className="mb-3 font-semibold">나이대 *</legend>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+        <legend className="mb-4 font-bold text-sm uppercase tracking-wider text-muted-foreground">나이대 *</legend>
+        <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
           {AGE_GROUPS.map((g) => (
             <label
               key={g.code}
-              className="flex cursor-pointer items-center justify-center rounded-lg border p-3 text-sm font-medium transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:text-primary"
+              className="flex cursor-pointer items-center justify-center rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm p-3.5 text-sm font-medium transition-all duration-300 has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-br has-[:checked]:from-primary/10 has-[:checked]:to-premium-cyan/10 has-[:checked]:text-primary has-[:checked]:shadow-sm has-[:checked]:shadow-primary/10 hover:border-primary/20 hover:bg-primary/[0.03]"
             >
               <input type="radio" name="ageGroup" value={g.code} className="sr-only" required />
               {g.label}
@@ -38,15 +38,15 @@ export function OnboardingForm() {
 
       {/* 학생 여부 */}
       <fieldset>
-        <legend className="mb-3 font-semibold">학생 여부 *</legend>
-        <div className="grid grid-cols-2 gap-2">
+        <legend className="mb-4 font-bold text-sm uppercase tracking-wider text-muted-foreground">학생 여부 *</legend>
+        <div className="grid grid-cols-2 gap-2.5">
           {[
             { value: "true", label: "재학생이에요" },
             { value: "false", label: "해당 없어요" },
           ].map((opt) => (
             <label
               key={opt.value}
-              className="flex cursor-pointer items-center justify-center rounded-lg border p-3 text-sm font-medium transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:text-primary"
+              className="flex cursor-pointer items-center justify-center rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm p-3.5 text-sm font-medium transition-all duration-300 has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-br has-[:checked]:from-primary/10 has-[:checked]:to-premium-cyan/10 has-[:checked]:text-primary has-[:checked]:shadow-sm has-[:checked]:shadow-primary/10 hover:border-primary/20 hover:bg-primary/[0.03]"
             >
               <input type="radio" name="isStudent" value={opt.value} className="sr-only" required />
               {opt.label}
@@ -57,12 +57,12 @@ export function OnboardingForm() {
 
       {/* 통신사 */}
       <fieldset>
-        <legend className="mb-3 font-semibold">통신사 *</legend>
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+        <legend className="mb-4 font-bold text-sm uppercase tracking-wider text-muted-foreground">통신사 *</legend>
+        <div className="grid grid-cols-3 gap-2.5 sm:grid-cols-5">
           {TELECOMS.map((t) => (
             <label
               key={t.code}
-              className="flex cursor-pointer items-center justify-center rounded-lg border p-3 text-sm font-medium transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:text-primary"
+              className="flex cursor-pointer items-center justify-center rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm p-3.5 text-sm font-medium transition-all duration-300 has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-br has-[:checked]:from-primary/10 has-[:checked]:to-premium-cyan/10 has-[:checked]:text-primary has-[:checked]:shadow-sm has-[:checked]:shadow-primary/10 hover:border-primary/20 hover:bg-primary/[0.03]"
             >
               <input type="radio" name="telecom" value={t.code} className="sr-only" required />
               {t.label}
@@ -73,11 +73,11 @@ export function OnboardingForm() {
 
       {/* 보유 카드사 */}
       <fieldset>
-        <legend className="mb-1 font-semibold">보유 카드사 (복수 선택)</legend>
-        <p className="mb-3 text-xs text-muted-foreground">없으면 선택하지 않아도 돼요.</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <legend className="mb-2 font-bold text-sm uppercase tracking-wider text-muted-foreground">보유 카드사 (복수 선택)</legend>
+        <p className="mb-4 text-xs text-muted-foreground">없으면 선택하지 않아도 돼요.</p>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
           {CARD_ISSUERS.map((c) => (
-            <div key={c.code} className="flex items-center gap-2 rounded-lg border p-3">
+            <div key={c.code} className="flex items-center gap-2.5 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm p-3.5 transition-all duration-300 hover:border-primary/20 hover:bg-primary/[0.03] has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-br has-[:checked]:from-primary/10 has-[:checked]:to-premium-cyan/10">
               <Checkbox id={`card-${c.code}`} name="cardIssuerIds" value={c.code} />
               <Label htmlFor={`card-${c.code}`} className="cursor-pointer text-sm">
                 {c.label}
@@ -89,11 +89,11 @@ export function OnboardingForm() {
 
       {/* 관심 카테고리 */}
       <fieldset>
-        <legend className="mb-1 font-semibold">관심 분야 * (복수 선택)</legend>
-        <p className="mb-3 text-xs text-muted-foreground">관심 분야가 일치하는 혜택이 상단에 표시돼요.</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <legend className="mb-2 font-bold text-sm uppercase tracking-wider text-muted-foreground">관심 분야 * (복수 선택)</legend>
+        <p className="mb-4 text-xs text-muted-foreground">관심 분야가 일치하는 혜택이 상단에 표시돼요.</p>
+        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
           {CATEGORIES.map((cat) => (
-            <div key={cat.code} className="flex items-center gap-2 rounded-lg border p-3">
+            <div key={cat.code} className="flex items-center gap-2.5 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm p-3.5 transition-all duration-300 hover:border-primary/20 hover:bg-primary/[0.03] has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-br has-[:checked]:from-primary/10 has-[:checked]:to-premium-cyan/10">
               <Checkbox id={`cat-${cat.code}`} name="categories" value={cat.code} />
               <Label htmlFor={`cat-${cat.code}`} className="cursor-pointer text-sm">
                 {cat.label}
@@ -105,17 +105,17 @@ export function OnboardingForm() {
 
       {/* 지역 (선택) */}
       <fieldset>
-        <legend className="mb-1 font-semibold">지역 (선택)</legend>
-        <p className="mb-3 text-xs text-muted-foreground">지역 맞춤 혜택을 우선 노출해요.</p>
+        <legend className="mb-2 font-bold text-sm uppercase tracking-wider text-muted-foreground">지역 (선택)</legend>
+        <p className="mb-4 text-xs text-muted-foreground">지역 맞춤 혜택을 우선 노출해요.</p>
         <div className="flex flex-wrap gap-2">
-          <label className="flex cursor-pointer items-center rounded-full border px-3 py-1.5 text-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:text-primary">
+          <label className="flex cursor-pointer items-center rounded-full border border-border/50 bg-card/50 backdrop-blur-sm px-4 py-2 text-sm font-medium transition-all duration-300 has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-r has-[:checked]:from-primary has-[:checked]:to-premium-cyan has-[:checked]:text-white has-[:checked]:shadow-sm has-[:checked]:shadow-primary/20 hover:border-primary/20">
             <input type="radio" name="region" value="" className="sr-only" defaultChecked />
             지역 무관
           </label>
           {REGIONS.map((r) => (
             <label
               key={r}
-              className="flex cursor-pointer items-center rounded-full border px-3 py-1.5 text-sm transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:text-primary"
+              className="flex cursor-pointer items-center rounded-full border border-border/50 bg-card/50 backdrop-blur-sm px-4 py-2 text-sm font-medium transition-all duration-300 has-[:checked]:border-primary/40 has-[:checked]:bg-gradient-to-r has-[:checked]:from-primary has-[:checked]:to-premium-cyan has-[:checked]:text-white has-[:checked]:shadow-sm has-[:checked]:shadow-primary/20 hover:border-primary/20"
             >
               <input type="radio" name="region" value={r} className="sr-only" />
               {r}
@@ -125,10 +125,10 @@ export function OnboardingForm() {
       </fieldset>
 
       {state?.error && (
-        <p className="rounded-lg bg-destructive/10 px-4 py-2 text-sm text-destructive">{state.error}</p>
+        <p className="rounded-xl bg-destructive/10 border border-destructive/20 px-5 py-3 text-sm text-destructive font-medium">{state.error}</p>
       )}
 
-      <Button type="submit" disabled={pending} className="w-full" size="lg">
+      <Button type="submit" disabled={pending} className="shimmer-btn w-full h-13 text-base font-bold text-white rounded-xl shadow-lg shadow-primary/20" size="lg">
         {pending ? "저장 중..." : "맞춤 혜택 보기 →"}
       </Button>
     </form>

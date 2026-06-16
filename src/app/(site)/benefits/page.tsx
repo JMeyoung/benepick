@@ -46,27 +46,34 @@ export default async function BenefitsPage({ searchParams }: Props) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10 relative">
-      {/* Background glowing decorations */}
-      <div className="absolute top-[-50px] right-[-50px] -z-10 size-[250px] rounded-full bg-primary/5 blur-[50px] pointer-events-none" />
+    <div className="mx-auto max-w-3xl px-4 py-12 relative">
+      {/* Decorative orbs */}
+      <div className="orb orb-primary animate-glow-pulse size-[300px] top-[-80px] right-[-80px] -z-10" />
+      <div className="orb orb-cyan animate-glow-pulse size-[200px] bottom-[20%] left-[-100px] -z-10" style={{ animationDelay: '1.5s' }} />
 
-      {/* Header section with user profile card */}
-      <div className="mb-8 p-6 rounded-2xl border border-border/60 bg-gradient-to-r from-primary/5 via-card to-card shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">내 조건 맞춤 혜택</h1>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            ✨ {AGE_GROUP_LABELS[profile.ageGroup]} ·{" "}
-            {profile.isStudent ? "대학생" : "일반"} ·{" "}
-            {telecomLabel(profile.telecom)}
-            {profile.cardIssuerIds.length > 0
-              ? ` · ${profile.cardIssuerIds.map(cardIssuerLabel).join(", ")}`
-              : ""}
-            {profile.region ? ` · ${profile.region}` : ""}
-          </p>
+      {/* Header section with premium user profile card */}
+      <div className="mb-10 p-7 rounded-2xl glass card-premium bg-gradient-to-r from-primary/[0.06] via-card/80 to-card/80">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+              <span className="text-gradient">내 조건 맞춤</span> 혜택
+            </h1>
+            <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary/5 border border-primary/10 text-primary/80 font-medium">
+                ✦ {AGE_GROUP_LABELS[profile.ageGroup]} ·{" "}
+                {profile.isStudent ? "대학생" : "일반"} ·{" "}
+                {telecomLabel(profile.telecom)}
+                {profile.cardIssuerIds.length > 0
+                  ? ` · ${profile.cardIssuerIds.map(cardIssuerLabel).join(", ")}`
+                  : ""}
+                {profile.region ? ` · ${profile.region}` : ""}
+              </span>
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="w-fit border-primary/20 text-primary font-semibold transition-all duration-300 hover:bg-primary/5 hover:border-primary/30 hover:shadow-sm hover:shadow-primary/10">
+            <Link href="/onboarding">⚙️ 조건 변경</Link>
+          </Button>
         </div>
-        <Button asChild variant="outline" size="sm" className="w-fit hover:bg-primary/5 border-primary/20 text-primary font-semibold transition-colors">
-          <Link href="/onboarding">⚙️ 조건 변경</Link>
-        </Button>
       </div>
 
       {/* Category filter */}
@@ -74,43 +81,45 @@ export default async function BenefitsPage({ searchParams }: Props) {
 
       {/* Benefits list */}
       {filtered.length === 0 ? (
-        <div className="mt-16 text-center py-12 rounded-2xl border border-dashed border-border/80 bg-muted/5">
-          <p className="text-5xl mb-4">🔍</p>
+        <div className="mt-16 text-center py-16 rounded-2xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm">
+          <div className="size-16 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center text-4xl">
+            🔍
+          </div>
           <p className="font-bold text-lg text-foreground">이 조건에 맞는 혜택이 없어요.</p>
           <p className="mt-2 text-sm text-muted-foreground">다른 관심사 카테고리를 선택하거나 조건을 수정해 보세요.</p>
         </div>
       ) : (
-        <ul className="mt-6 space-y-4">
-          {filtered.map((b) => {
+        <ul className="mt-8 space-y-4">
+          {filtered.map((b, i) => {
             const benefit = benefitMap.get(b.id)!;
             const providers = benefit.organizations
               .filter((bo) => bo.role === "PROVIDER")
               .map((bo) => bo.organization.name);
 
             return (
-              <li key={benefit.id} className="group">
+              <li key={benefit.id} className="group animate-slide-up" style={{ animationDelay: `${i * 0.05}s`, animationFillMode: 'backwards' }}>
                 <Link
                   href={`/benefits/${benefit.id}`}
-                  className="block rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all duration-300 group-hover:shadow-md group-hover:border-primary/25 transform group-hover:-translate-y-0.5"
+                  className="block rounded-2xl card-premium bg-card/70 backdrop-blur-sm p-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                        <Badge variant="secondary" className="text-xs font-semibold bg-secondary/80 text-secondary-foreground">
+                        <Badge variant="secondary" className="text-xs font-semibold bg-primary/8 text-primary border-primary/15">
                           {categoryLabel(benefit.category)}
                         </Badge>
                         {benefit.isFeatured && (
-                          <Badge className="text-xs bg-primary/10 text-primary border-primary/10 hover:bg-primary/10 font-bold">
-                            추천
+                          <Badge className="text-xs bg-gradient-to-r from-primary/15 to-premium-cyan/15 text-primary border-primary/15 hover:bg-primary/15 font-bold">
+                            ✦ 추천
                           </Badge>
                         )}
                         {providers.map((p) => (
-                          <Badge key={p} variant="outline" className="text-xs border-muted-foreground/30 text-muted-foreground">
+                          <Badge key={p} variant="outline" className="text-xs border-border/50 text-muted-foreground">
                             {p}
                           </Badge>
                         ))}
                       </div>
-                      <h3 className="font-bold text-lg text-foreground leading-snug truncate group-hover:text-primary transition-colors">
+                      <h3 className="font-bold text-lg text-foreground leading-snug truncate transition-colors duration-300 group-hover:text-primary">
                         {benefit.title}
                       </h3>
                       <p className="mt-2 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
@@ -121,9 +130,9 @@ export default async function BenefitsPage({ searchParams }: Props) {
                       <span className="text-xl shrink-0 filter drop-shadow-sm select-none" title="저장됨">🔖</span>
                     )}
                   </div>
-                  <div className="mt-4 pt-4 border-t border-border/30 flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="mt-4 pt-4 border-t border-border/20 flex items-center justify-between text-xs text-muted-foreground">
                     <div>
-                      최근 업데이트: <strong>{formatRelativeDate(benefit.sourceUpdatedAt)}</strong>
+                      최근 업데이트: <strong className="text-foreground/80">{formatRelativeDate(benefit.sourceUpdatedAt)}</strong>
                     </div>
                     {benefit.endsAt && (
                       <div className="flex items-center gap-1 text-destructive font-semibold">
@@ -140,7 +149,7 @@ export default async function BenefitsPage({ searchParams }: Props) {
       )}
 
       {/* Info indicator */}
-      <p className="mt-8 text-center text-xs text-muted-foreground bg-muted/10 py-2 rounded-lg border border-border/20">
+      <p className="mt-10 text-center text-xs text-muted-foreground glass-subtle py-3 px-4 rounded-xl">
         맞춤형 혜택 총 {ranked.length}개 중{" "}
         {category ? `[${CATEGORY_LABELS[category] ?? category}] 필터링 ` : ""}
         {filtered.length}개 매칭 완료
