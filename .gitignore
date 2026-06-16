@@ -48,3 +48,7 @@ prisma/*.db-journal
 next-env.d.ts
 
 /src/generated/prisma
+
+# 크롤러 산출물
+*_benefits.json
+*_screenshots/
