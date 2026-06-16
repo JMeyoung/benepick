@@ -34,7 +34,7 @@ jobs:
         run: python3 crawl.py
       - name: Benepick 업로드 (SKT)
         env:
-          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+          ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
         run: |
           if [ -f skt_benefits.json ]; then
             node upload.mjs --org SKT --host ${{ secrets.BENEPICK_URL }}
@@ -71,7 +71,7 @@ jobs:
         run: python3 kt_crawl.py
       - name: Benepick 업로드 (KT)
         env:
-          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+          ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
         run: |
           if [ -f kt_benefits.json ]; then
             node upload.mjs --org KT --host ${{ secrets.BENEPICK_URL }}
@@ -108,7 +108,7 @@ jobs:
         run: python3 lgu_crawl.py
       - name: Benepick 업로드 (LG U+)
         env:
-          ADMIN_API_KEY: ${{ secrets.CRAWLER_API_KEY }}
+          ADMIN_API_KEY: ${{ secrets.ADMIN_API_KEY }}
         run: |
           if [ -f lgu_benefits.json ]; then
             node upload.mjs --org "LG유플러스" --host ${{ secrets.BENEPICK_URL }}
