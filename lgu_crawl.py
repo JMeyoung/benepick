@@ -6,7 +6,7 @@ from pathlib import Path
 import anthropic
 from playwright.async_api import async_playwright
 
-SOURCE_URL = "https://www.lguplus.com/benefit/membership"
+SOURCE_URL = "https://www.lguplus.com/benefit-membership"
 OUTPUT_DIR = Path("lgu_screenshots")
 OUTPUT_JSON = Path("lgu_benefits.json")
 VIEWPORT = {"width": 1280, "height": 800}

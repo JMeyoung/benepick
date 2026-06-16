@@ -6,14 +6,14 @@ from pathlib import Path
 import anthropic
 from playwright.async_api import async_playwright
 
-SOURCE_URL = "https://membership.kt.com/mmb/benefit/benefitList.do"
+SOURCE_URL = "https://membership.kt.com/main/MainInfo.do"
 OUTPUT_DIR = Path("kt_screenshots")
 OUTPUT_JSON = Path("kt_benefits.json")
 VIEWPORT = {"width": 1280, "height": 800}
 TODAY = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 TODAY_DATE = datetime.now()
 
-VISION_PROMPT = f"""이 스크린샷은 KT 멤버십 혜택 페이지입니다.
+VISION_PROMPT = f"""이 스크린샷은 KT 멤버십 메인 페이지 또는 혜택 페이지입니다.
 화면에 보이는 혜택 카드들을 분석해서 아래 JSON 배열 형식으로 추출해주세요.
 혜택 카드가 없는 화면은 빈 배열 [] 반환.
 반드시 JSON 배열만 반환, 다른 텍스트 금지.
