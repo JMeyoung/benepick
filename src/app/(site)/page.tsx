@@ -107,6 +107,70 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Mission & Purpose Section ── */}
+      <section className="relative border-t border-border/30 px-4 py-24 overflow-hidden">
+        {/* Soft background glow */}
+        <div className="orb orb-cyan animate-float size-[350px] top-[20%] left-[-10%] opacity-20 -z-10" />
+        <div className="orb orb-primary animate-float-delayed size-[300px] bottom-[10%] right-[-10%] opacity-15 -z-10" />
+
+        <div className="mx-auto w-full max-w-4xl">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 items-center">
+            {/* Header Column */}
+            <div className="lg:col-span-5 space-y-6">
+              <Badge 
+                variant="outline" 
+                className="border-primary/20 bg-primary/5 text-primary px-3 py-1 font-semibold text-xs"
+              >
+                ✦ OUR MISSION
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                우리는 왜<br />
+                <span className="text-gradient">베네픽</span>을<br />
+                만들었을까요?
+              </h2>
+              <p className="text-muted-foreground leading-relaxed text-base">
+                혜택을 찾기 위해 매일 여러 어플을 켜고, 나에게 맞지도 않는 정보를 필터링하는 불필요한 시간을 줄여드리기 위해 시작되었습니다.
+              </p>
+            </div>
+
+            {/* Cards Column */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Card 1: The Problem */}
+              <div className="card-premium glass-subtle p-6 rounded-2xl border border-border/30 hover:border-destructive/20 relative group overflow-hidden transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-destructive/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex gap-4 items-start relative z-10">
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-destructive/10 text-destructive text-xl">
+                    ⚠️
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-foreground group-hover:text-destructive transition-colors duration-300">흩어진 혜택과 정보 과부하</h3>
+                    <p className="text-muted-foreground text-sm mt-1.5 leading-relaxed">
+                      카드사 혜택, 통신사 멤버십, 브랜드 할인... 매번 여러 웹사이트와 앱을 번거롭게 뒤져야 하고, 수많은 광고성 정보 속에서 내 조건에 맞는 진짜 혜택을 골라내기는 어렵습니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: The Purpose */}
+              <div className="card-premium glass-subtle p-6 rounded-2xl border border-border/30 hover:border-primary/20 relative group overflow-hidden transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="flex gap-4 items-start relative z-10">
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary text-xl">
+                    ✨
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300">조건 맞춤형 혜택 자동 큐레이션</h3>
+                    <p className="text-muted-foreground text-sm mt-1.5 leading-relaxed">
+                      베네픽은 매일 흩어진 제휴 할인 및 멤버십 혜택을 자동으로 수집하여 단 하나의 통합 혜택 허브를 만듭니다. 사용자가 입력한 나이, 카드사, 통신사 정보에 따라 지금 즉시 사용할 수 있는 실질적인 혜택만을 선별하여 제안합니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── How it works Section ── */}
       <section className="relative border-t border-border/30 px-4 py-24 overflow-hidden">
         {/* Subtle background glow */}
