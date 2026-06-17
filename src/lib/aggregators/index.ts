@@ -1,15 +1,24 @@
 import { Aggregator } from './types';
-import { exampleMockAggregator } from './exampleMock';
 import { sktTMembershipAggregator } from './sktTMembership';
-import { seoulYouthAggregator } from './seoulYouth';
+import { youthCenterAggregator } from './youthCenter';
 import { hyundaiCardAggregator } from './hyundaiCard';
+import { cooconCardAggregator } from './cooconCard';
+import { govSubsidyAggregator } from './govSubsidy';
+import { welloPolicyAggregator } from './welloPolicy';
 
 // Register all active aggregators here
 export const aggregators: Aggregator[] = [
-  exampleMockAggregator,
-  sktTMembershipAggregator,
-  seoulYouthAggregator,
+  // 카드 혜택
   hyundaiCardAggregator,
+  cooconCardAggregator,
+
+  // 통신사 멤버십
+  sktTMembershipAggregator,
+
+  // 정부·정책
+  youthCenterAggregator,
+  govSubsidyAggregator,
+  welloPolicyAggregator,
 ];
 
 export async function runAllAggregators() {

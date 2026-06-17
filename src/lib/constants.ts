@@ -11,6 +11,7 @@ export const CATEGORIES = [
   { code: "FINANCE", label: "금융" },
   { code: "BEAUTY_HEALTH", label: "뷰티·건강" },
   { code: "LIFE", label: "생활" },
+  { code: "GOV_POLICY", label: "정부·정책" },
 ] as const;
 export type CategoryCode = (typeof CATEGORIES)[number]["code"];
 
