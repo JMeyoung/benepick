@@ -3,6 +3,9 @@ import { sktTMembershipAggregator } from './sktTMembership';
 import { youthCenterAggregator } from './youthCenter';
 import { hyundaiCardAggregator } from './hyundaiCard';
 import { cooconCardAggregator } from './cooconCard';
+import { jeonggaCardAggregator } from './jeonggaCard';
+import { mvnoPlansAggregator } from './mvnoPlans';
+import { convenienceDealsAggregator } from './convenienceDeals';
 import { govSubsidyAggregator } from './govSubsidy';
 import { welloPolicyAggregator } from './welloPolicy';
 
@@ -11,9 +14,14 @@ export const aggregators: Aggregator[] = [
   // 카드 혜택
   hyundaiCardAggregator,
   cooconCardAggregator,
+  jeonggaCardAggregator, // 정가거부 추천 가성비 카드
 
-  // 통신사 멤버십
+  // 통신사 멤버십 / 알뜰폰
   sktTMembershipAggregator,
+  mvnoPlansAggregator, // 알뜰폰(MVNO) 요금제
+
+  // 편의점·생활 행사
+  convenienceDealsAggregator,
 
   // 정부·정책
   youthCenterAggregator,

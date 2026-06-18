@@ -87,6 +87,23 @@ export async function GET(request: Request) {
               role: "PROVIDER"
             }
           });
+
+          // 4. Sync EligibilityRules (노출 조건) — delete & recreate each run.
+          // 규칙이 없으면 전 사용자에게 노출된다(matchesBenefit: rules.length===0 → true).
+          await prisma.eligibilityRule.deleteMany({
+            where: { benefitId: savedBenefit.id }
+          });
+          if (item.rules?.length) {
+            await prisma.eligibilityRule.createMany({
+              data: item.rules.map((r) => ({
+                benefitId: savedBenefit.id,
+                ruleType: r.ruleType,
+                minAge: r.minAge ?? null,
+                maxAge: r.maxAge ?? null,
+                stringValue: r.stringValue ?? null,
+              })),
+            });
+          }
         }
       }
     }
