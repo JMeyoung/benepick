@@ -36,6 +36,11 @@ export const CARD_ISSUERS = [
   { code: "WOORI", label: "우리카드" },
   { code: "HANA", label: "하나카드" },
   { code: "BC", label: "BC카드" },
+  { code: "NH", label: "NH농협카드" },
+  { code: "IBK", label: "IBK기업은행" },
+  { code: "KAKAOBANK", label: "카카오뱅크" },
+  { code: "TOSS", label: "토스뱅크" },
+  { code: "KBANK", label: "케이뱅크" },
 ] as const;
 export type CardIssuerCode = (typeof CARD_ISSUERS)[number]["code"];
 
