@@ -11,7 +11,6 @@
   --color-foreground: var(--foreground);
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
-  --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -55,6 +54,16 @@
   --color-premium-emerald: var(--premium-emerald);
   --color-premium-teal: var(--premium-teal);
   --color-premium-cyan: var(--premium-cyan);
+
+  /* Semantic typography scale */
+  --font-size-caption: 0.75rem;
+  --font-size-body-sm: 0.8125rem;
+  --font-size-body: 0.875rem;
+  --font-size-body-lg: 1rem;
+  --font-size-heading-sm: 1.125rem;
+  --font-size-heading-md: 1.25rem;
+  --font-size-heading-lg: 1.5rem;
+  --font-size-display: 1.875rem;
 
   /* Premium animation timings */
   --animate-shimmer: shimmer 2.5s ease-in-out infinite;
@@ -222,6 +231,10 @@
     background: oklch(0.55 0.16 168 / 20%);
     color: oklch(0.15 0.015 250);
   }
+  .dark ::selection {
+    background: oklch(0.70 0.14 170 / 30%);
+    color: oklch(0.95 0.005 170);
+  }
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
@@ -371,4 +384,16 @@
   .stagger-2 { animation-delay: 0.2s; }
   .stagger-3 { animation-delay: 0.3s; }
   .stagger-4 { animation-delay: 0.4s; }
+}
+
+/* ── Motion Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
