@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { ChevronDownIcon, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,31 +81,37 @@ export function BenefitForm({ action, organizations, initialData, submitLabel = 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="category">카테고리 *</Label>
-            <select
-              id="category"
-              name="category"
-              required
-              className="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm"
-              defaultValue={initialData?.category ?? ""}
-            >
-              <option value="" disabled>선택</option>
-              {CATEGORIES.map((c) => (
-                <option key={c.code} value={c.code}>{c.label}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="category"
+                name="category"
+                required
+                className="flex h-10 w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                defaultValue={initialData?.category ?? ""}
+              >
+                <option value="" disabled>선택</option>
+                {CATEGORIES.map((c) => (
+                  <option key={c.code} value={c.code}>{c.label}</option>
+                ))}
+              </select>
+              <ChevronDownIcon className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="status">상태 *</Label>
-            <select
-              id="status"
-              name="status"
-              className="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm"
-              defaultValue={initialData?.status ?? "DRAFT"}
-            >
-              {BENEFIT_STATUSES.map((s) => (
-                <option key={s.code} value={s.code}>{s.label}</option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                id="status"
+                name="status"
+                className="flex h-10 w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                defaultValue={initialData?.status ?? "DRAFT"}
+              >
+                {BENEFIT_STATUSES.map((s) => (
+                  <option key={s.code} value={s.code}>{s.label}</option>
+                ))}
+              </select>
+              <ChevronDownIcon className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -231,28 +238,34 @@ export function BenefitForm({ action, organizations, initialData, submitLabel = 
               </div>
             )}
             {rule.ruleType === "TELECOM" && (
-              <select
-                className="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm"
-                value={rule.stringValue ?? ""}
-                onChange={(e) => updateRule(idx, { stringValue: e.target.value })}
-              >
-                <option value="" disabled>선택</option>
-                {TELECOMS.filter((t) => !["MVNO", "NONE"].includes(t.code)).map((t) => (
-                  <option key={t.code} value={t.code}>{t.label}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  className="flex h-10 w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                  value={rule.stringValue ?? ""}
+                  onChange={(e) => updateRule(idx, { stringValue: e.target.value })}
+                >
+                  <option value="" disabled>선택</option>
+                  {TELECOMS.filter((t) => !["MVNO", "NONE"].includes(t.code)).map((t) => (
+                    <option key={t.code} value={t.code}>{t.label}</option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+              </div>
             )}
             {rule.ruleType === "CARD_ISSUER" && (
-              <select
-                className="flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm"
-                value={rule.stringValue ?? ""}
-                onChange={(e) => updateRule(idx, { stringValue: e.target.value })}
-              >
-                <option value="" disabled>선택</option>
-                {CARD_ISSUERS.map((c) => (
-                  <option key={c.code} value={c.code}>{c.label}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select
+                  className="flex h-10 w-full appearance-none rounded-md border bg-background px-3 py-2 pr-9 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+                  value={rule.stringValue ?? ""}
+                  onChange={(e) => updateRule(idx, { stringValue: e.target.value })}
+                >
+                  <option value="" disabled>선택</option>
+                  {CARD_ISSUERS.map((c) => (
+                    <option key={c.code} value={c.code}>{c.label}</option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+              </div>
             )}
             {rule.ruleType === "REGION" && (
               <Input
@@ -273,7 +286,8 @@ export function BenefitForm({ action, organizations, initialData, submitLabel = 
       )}
 
       <div className="flex gap-3">
-        <Button type="submit" disabled={pending} className="flex-1">
+        <Button type="submit" disabled={pending} className="flex-1 gap-2">
+          {pending && <Loader2 className="size-4 animate-spin" aria-hidden />}
           {pending ? "저장 중..." : submitLabel}
         </Button>
         <Button type="button" variant="outline" onClick={() => history.back()}>취소</Button>

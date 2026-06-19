@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { PostHogProvider } from "@/components/posthog-provider";
 import { PostHogPageview } from "@/components/posthog-pageview";
+import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
@@ -20,21 +21,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html lang="ko" className="h-full antialiased" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
       </head>
       <body className="min-h-full flex flex-col font-sans">
-        <PostHogProvider>
-          <Suspense>
-            <PostHogPageview />
-          </Suspense>
-          {children}
-          <Toaster position="top-center" richColors />
-        </PostHogProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <PostHogProvider>
+            <Suspense>
+              <PostHogPageview />
+            </Suspense>
+            {children}
+            <Toaster position="top-center" richColors />
+          </PostHogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

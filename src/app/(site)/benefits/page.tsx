@@ -8,6 +8,7 @@ import { getVisitorId, getVisitorProfile } from "@/lib/visitor";
 import { filterAndRankBenefits } from "@/lib/matching";
 import { categoryLabel, telecomLabel, cardIssuerLabel, AGE_GROUP_LABELS, CATEGORY_LABELS } from "@/lib/constants";
 import { formatRelativeDate } from "@/lib/format";
+import { SearchIcon, BookmarkIcon } from "lucide-react";
 import { CategoryFilterChips } from "./category-filter-chips";
 
 export const metadata: Metadata = { title: "내 조건 맞춤 혜택 목록" };
@@ -82,8 +83,8 @@ export default async function BenefitsPage({ searchParams }: Props) {
       {/* Benefits list */}
       {filtered.length === 0 ? (
         <div className="mt-16 text-center py-16 rounded-2xl border border-dashed border-border/50 bg-card/30 backdrop-blur-sm">
-          <div className="size-16 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center text-4xl">
-            🔍
+          <div className="size-16 mx-auto mb-5 rounded-2xl bg-primary/5 flex items-center justify-center">
+            <SearchIcon className="size-8 text-primary/40" aria-hidden />
           </div>
           <p className="font-bold text-lg text-foreground">이 조건에 맞는 혜택이 없어요.</p>
           <p className="mt-2 text-sm text-muted-foreground">다른 관심사 카테고리를 선택하거나 조건을 수정해 보세요.</p>
@@ -127,7 +128,10 @@ export default async function BenefitsPage({ searchParams }: Props) {
                       </p>
                     </div>
                     {savedIds.has(benefit.id) && (
-                      <span className="text-xl shrink-0 filter drop-shadow-sm select-none" title="저장됨">🔖</span>
+                      <BookmarkIcon
+                        className="size-5 shrink-0 text-primary fill-primary/20"
+                        aria-label="저장됨"
+                      />
                     )}
                   </div>
                   <div className="mt-4 pt-4 border-t border-border/20 flex items-center justify-between text-xs text-muted-foreground">
