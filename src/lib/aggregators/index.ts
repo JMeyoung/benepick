@@ -1,5 +1,4 @@
 import { Aggregator } from './types';
-import { sktTMembershipAggregator } from './sktTMembership';
 import { youthCenterAggregator } from './youthCenter';
 import { hyundaiCardAggregator } from './hyundaiCard';
 import { cooconCardAggregator } from './cooconCard';
@@ -21,7 +20,8 @@ export const aggregators: Aggregator[] = [
   jeonggaCardAggregator, // 정가거부 추천 가성비 카드
 
   // 통신사 멤버십 / 알뜰폰
-  sktTMembershipAggregator,
+  // NOTE: sktTMembershipAggregator 는 실제 API 미연결 스텁(mock 데이터)이라 등록 보류.
+  //       T멤버십 API 연결 완료 후 다시 추가할 것.
   mvnoPlansAggregator, // 알뜰폰(MVNO) 요금제
 
   // 편의점·생활 행사

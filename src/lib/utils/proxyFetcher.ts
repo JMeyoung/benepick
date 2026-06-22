@@ -13,13 +13,16 @@ export async function smartFetch(url: string, options: RequestInit = {}): Promis
     // We disable javascript rendering by default to keep it fast, but you can toggle it
     const proxyUrl = `https://app.scrapingbee.com/api/v1/?api_key=${scrapingBeeKey}&url=${encodeURIComponent(url)}&render_js=false`;
     
-    // Forward the fetch request to the proxy
-    // Note: ScrapingBee manages headers internally, but we can pass basic ones
+    // Forward the fetch request to the proxy.
+    // Note: ScrapingBee manages most headers internally; we forward Accept if the
+    // caller set one. Use the Headers API so any HeadersInit shape (object/array/
+    // Headers) is handled correctly instead of unsafe index access.
+    const incoming = new Headers(options.headers);
     return fetch(proxyUrl, {
       method: options.method || 'GET',
       headers: {
-        'Accept': options.headers ? (options.headers as any)['Accept'] : 'text/html',
-      }
+        Accept: incoming.get('Accept') ?? 'text/html',
+      },
     });
   }
 

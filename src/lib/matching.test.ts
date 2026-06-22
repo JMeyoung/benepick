@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
   matchesBenefit,
-  scoreBenefit,
   filterAndRankBenefits,
   type BenefitForMatch,
   type VisitorCondition,

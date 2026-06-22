@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { BenefitForm } from "@/components/admin/benefit-form";
 import { updateBenefitAction } from "@/app/actions/admin-benefits";
-import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "혜택 수정 | 관리자" };
 
