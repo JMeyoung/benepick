@@ -107,9 +107,6 @@ function parseYouthPolicyXml(xml: string): AggregatedBenefit[] {
     const orgName = extractXmlTag(block, 'cnsgNmor') || '온통청년';
     const policyId = extractXmlTag(block, 'bizId') || '';
 
-    // 분야 코드로 카테고리 매핑
-    const bizType = extractXmlTag(block, 'polyRlmCd') || '';
-
     if (!title) continue;
 
     benefits.push({

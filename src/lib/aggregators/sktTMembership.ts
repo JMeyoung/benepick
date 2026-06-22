@@ -6,10 +6,9 @@ export const sktTMembershipAggregator: Aggregator = {
     console.log("[SKT_TMEMBERSHIP] Starting data aggregation...");
 
     try {
-      // TODO: 사용자가 Chrome 개발자 도구(Network 탭)에서 찾아낸 실제 API 주소와 헤더를 입력해야 합니다.
-      // 예시 API 주소: https://tmembership.tworld.co.kr/api/benefits (가상의 주소입니다)
-      const apiUrl = 'https://tmembership.tworld.co.kr/api/example-endpoint';
-      
+      // TODO: 실제 T멤버십 API 주소/헤더를 Chrome 개발자 도구(Network 탭)에서 찾아 연결해야 합니다.
+      // 아래는 연결 전 형태를 보여주는 예시이며, 현재는 mock 데이터를 반환하는 스텁입니다.
+      // const apiUrl = 'https://tmembership.tworld.co.kr/api/benefits';
       /*
       const res = await fetch(apiUrl, {
         method: 'GET',
@@ -34,7 +33,7 @@ export const sktTMembershipAggregator: Aggregator = {
           title: "[T day] 뚜레쥬르 최대 30% 할인",
           summary: "매월 첫째 주 T day 한정 혜택",
           description: "T멤버십 바코드를 제시하면 결제 금액의 30% 할인 (최대 1만원 한도)",
-          category: "BAKERY",
+          category: "CAFE_FOOD",
           sourceUrl: "https://tmembership.tworld.co.kr/web/html/coupon/tday.jsp", // 실제 혜택 안내 페이지 URL
           organizationName: "SKT",
           organizationType: "TELECOM",
@@ -43,7 +42,7 @@ export const sktTMembershipAggregator: Aggregator = {
           title: "CU 편의점 천원당 100원 할인",
           summary: "상시 할인 혜택 (VIP 기준)",
           description: "결제 금액 천원당 100원 할인 (일 1회 한정)",
-          category: "CONVENIENCE_STORE",
+          category: "LIFE",
           sourceUrl: "https://tmembership.tworld.co.kr/web/html/coupon/detail.jsp",
           organizationName: "SKT",
           organizationType: "TELECOM",

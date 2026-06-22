@@ -14,11 +14,11 @@ export const hyundaiCardAggregator: Aggregator = {
       try {
         const res = await smartFetch(url);
         if (res.ok) {
-          const rawData = await res.json();
-          // API 연동 가공 로직...
+          await res.json();
+          // TODO: API 연동 시 응답을 AggregatedBenefit[] 로 가공해 benefits 에 채운다.
           console.log("[HYUNDAI_CARD_BENEFITS] Fetch successful, parsing JSON...");
         }
-      } catch (e) {
+      } catch {
         // Fail silently and use fallback below for stable Stage 1
         console.log("[HYUNDAI_CARD_BENEFITS] External fetch failed, applying static active list...");
       }

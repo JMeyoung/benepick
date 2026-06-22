@@ -16,8 +16,8 @@ export const seoulYouthAggregator: Aggregator = {
         const url = `https://www.youthcenter.go.kr/opi/youthPlcyList.do?openApiVlak=${apiKey}&display=20&pageIndex=1`;
         const res = await smartFetch(url);
         if (res.ok) {
-          const text = await res.text();
-          // XML/JSON 파싱 로직 적용...
+          await res.text();
+          // TODO: 응답(XML/JSON)을 파싱해 benefits 에 채운다.
           console.log("[SEOUL_YOUTH_POLICY] API fetch successful, parsing...");
         }
       }

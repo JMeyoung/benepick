@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { logoutAction } from "@/app/actions/admin-auth";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 const NAV_ITEMS = [
   { href: "/admin/benefits", label: "혜택 관리" },
